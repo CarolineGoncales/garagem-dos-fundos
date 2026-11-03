@@ -1,0 +1,521 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Redaction+35:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+/* CONFIGURAÇÕES GERAIS */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080808;
+    color: #222;
+}
+
+/* CABEÇALHO */
+
+.topo {
+    background: #080808;
+    color: white;
+    padding: 20px 5%;
+}
+
+.cabecalho {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.logo {
+    width: 135px;
+    height: 105px;
+    object-fit: contain;
+}
+
+.apresentacao h1 {
+    font-family: 'Black Ops One', cursive;
+    font-size: 38px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.apresentacao p {
+    color: #ccc;
+    margin-top: 8px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* MENU */
+
+.menu {
+    max-width: 1200px;
+    margin: 25px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    border-top: 1px solid #333;
+    padding-top: 18px;
+}
+
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px 18px;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    background: #c62828;
+    border-radius: 4px;
+}
+
+/* CONTEÚDO CENTRAL */
+
+.conteudo {
+    background: #fff;
+    max-width: 1200px;
+    min-height: 600px;
+    margin: auto;
+    padding: 45px 35px;
+}
+
+.titulo-produtos {
+    border-left: 5px solid #c62828;
+    padding-left: 15px;
+    margin-bottom: 35px;
+}
+
+.titulo-produtos h2 {
+    font-size: 25px;
+    color: #171717;
+    font-weight: 900;
+}
+
+.titulo-produtos p {
+    color: #777;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+/* PRODUTOS */
+
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.produto {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    transition: 0.3s;
+}
+
+.produto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.produto img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background: #f5f5f5;
+}
+
+.produto-info {
+    padding: 18px;
+}
+
+.produto-info h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.produto-info p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.preco {
+    color: #c62828;
+    font-size: 23px;
+    font-weight: bold;
+    margin: 18px 0;
+}
+
+.botao-comprar {
+    display: block;
+    background: #c62828;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 13px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.botao-comprar:hover {
+    background: #8e1515;
+}
+
+/* PÁGINAS INTERNAS */
+
+.pagina-interna {
+    background: white;
+    max-width: 1200px;
+    min-height: 600px;
+    margin: auto;
+    padding: 45px 35px;
+}
+
+.pagina-interna h2 {
+    border-left: 5px solid #c62828;
+    padding-left: 15px;
+    margin-bottom: 25px;
+    font-size: 26px;
+}
+
+.pagina-interna p {
+    line-height: 1.7;
+    color: #555;
+}
+
+/* RODAPÉ */
+
+.rodape {
+    background: #080808;
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+    margin-top: 0;
+}
+
+.rodape h3 {
+    font-family: 'Black Ops One', cursive;
+    color: #e53935;
+    margin-bottom: 12px;
+}
+
+.rodape p {
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* CELULAR */
+
+@media (max-width: 768px) {
+
+    .cabecalho {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        width: 120px;
+        height: 95px;
+    }
+
+    .apresentacao h1 {
+        font-size: 22px;
+    }
+
+    .menu {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+
+    .menu a {
+        font-size: 11px;
+        padding: 10px;
+    }
+
+    .conteudo,
+    .pagina-interna {
+        padding: 30px 18px;
+    }
+
+    .produtos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .produto img {
+        height: 150px;
+    }
+
+    .produto-info {
+        padding: 12px;
+    }
+
+    .produto-info h3 {
+        font-size: 14px;
+    }
+
+    .preco {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .produtos {
+        grid-template-columns: 1fr;
+    }
+
+    .produto img {
+        height: 220px;
+    }
+
+}
+
+
+/* PÁGINA DE SERVIÇOS */
+
+.lista-servicos {
+    margin-top: 35px;
+}
+
+.servico-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.servico-item span {
+    background: #c62828;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.servico-item h3 {
+    color: #222;
+    margin-bottom: 7px;
+}
+
+.servico-item p {
+    color: #666;
+}
+
+.chamada-contato {
+    margin-top: 45px;
+    padding: 35px 20px;
+    background: #f3f3f3;
+    border-left: 5px solid #c62828;
+    text-align: center;
+}
+
+.chamada-contato h2 {
+    border: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.chamada-contato p {
+    margin-bottom: 25px;
+}
+
+.chamada-contato .botao-comprar {
+    max-width: 250px;
+    margin: auto;
+}
+
+
+/* FORMULÁRIO DE CONTATO */
+
+.contato-container {
+    max-width: 650px;
+    margin: 10px auto;
+    padding: 35px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.contato-titulo {
+    margin-bottom: 30px;
+}
+
+.contato-titulo h2 {
+    border-left: 5px solid #c62828;
+    padding-left: 15px;
+    margin-bottom: 15px;
+}
+
+.contato-titulo p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.formulario-contato {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario-contato label {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.formulario-contato input,
+.formulario-contato select,
+.formulario-contato textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial;
+    font-size: 14px;
+    outline: none;
+}
+
+.formulario-contato input:focus,
+.formulario-contato select:focus,
+.formulario-contato textarea:focus {
+    border-color: #c62828;
+}
+
+.formulario-contato textarea {
+    resize: vertical;
+}
+
+.botao-enviar {
+    margin-top: 20px;
+    padding: 16px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao-enviar:hover {
+    background: #8e1515;
+}
+
+@media (max-width: 600px) {
+
+    .contato-container {
+        padding: 20px;
+    }
+
+}
+
+
+/* PÁGINA DE AGRADECIMENTO */
+
+.mensagem-sucesso {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 45px 25px;
+    text-align: center;
+    background: #f7f7f7;
+    border-radius: 10px;
+}
+
+.icone-sucesso {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 25px;
+    background: #c62828;
+    color: white;
+    border-radius: 50%;
+    font-size: 45px;
+    line-height: 75px;
+    font-weight: bold;
+}
+
+.mensagem-sucesso h2 {
+    border: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.mensagem-sucesso p {
+    margin-bottom: 30px;
+}
+
+.mensagem-sucesso .botao-comprar {
+    max-width: 260px;
+    margin: auto;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+    isolation: isolate;
+    background: #080808;
+    color: #222;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("imagens/carros_fundo.png");
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    opacity: 0.35;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ALINHAMENTO DOS CARDS E BOTÕES */
+
+.produto {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.produto-imagem-container {
+    flex-shrink: 0;
+}
+
+.produto-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.produto-info .botao-comprar {
+    margin-top: auto;
+}
+
+.produto-ver-fotos {
+    margin-bottom: 12px;
+}

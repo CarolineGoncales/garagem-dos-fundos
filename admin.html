@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administração | Garagem dos Fundos</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .admin-login {
+            max-width: 420px;
+            margin: 70px auto;
+            padding: 35px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,.15);
+            text-align: center;
+        }
+
+        .admin-login h2 {
+            color: #171717;
+            margin-bottom: 10px;
+        }
+
+        .admin-login p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .admin-login button {
+            width: 100%;
+            padding: 14px;
+            background: #b5121b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .admin-login button:hover {
+            background: #850d14;
+        }
+
+        .admin-login button:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #b5121b;
+        }
+
+        .voltar-site {
+            display: inline-block;
+            margin-top: 20px;
+            color: #b5121b;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topo">
+        <div class="cabecalho">
+            <a href="index.html">
+                <img src="imagens/logo.jpeg"
+                     alt="Garagem dos Fundos"
+                     class="logo">
+            </a>
+
+            <div class="apresentacao">
+                <h1>GARAGEM DOS FUNDOS</h1>
+                <p>Peças, histórias e paixão por automóveis.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-login">
+
+        <h2>ÁREA ADMINISTRATIVA</h2>
+        <p>Acesso exclusivo para administradores.</p>
+
+        <form id="formLogin">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="E-mail"
+                autocomplete="username"
+                required
+            >
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Senha"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" id="botaoEntrar">
+                ENTRAR
+            </button>
+
+            <div id="mensagem" class="mensagem" role="alert"></div>
+
+        </form>
+
+        <a href="index.html" class="voltar-site">
+            ← Voltar para a loja
+        </a>
+
+    </main>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+
+        const formulario = document.getElementById("formLogin");
+        const mensagem = document.getElementById("mensagem");
+        const botao = document.getElementById("botaoEntrar");
+
+        formulario.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            mensagem.textContent = "";
+            botao.disabled = true;
+            botao.textContent = "ENTRANDO...";
+
+            const dados = new URLSearchParams();
+
+            dados.append(
+                "username",
+                document.getElementById("email").value
+            );
+
+            dados.append(
+                "password",
+                document.getElementById("senha").value
+            );
+
+            try {
+
+                const resposta = await fetch(`${API_URL}/admin/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: dados
+                });
+
+                const resultado = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(
+                        resultado.detail || "E-mail ou senha incorretos."
+                    );
+                }
+
+                localStorage.setItem(
+                    "garagem_token",
+                    resultado.access_token
+                );
+
+                window.location.href = "painel.html";
+
+            } catch (erro) {
+
+                mensagem.textContent = erro.message;
+
+                botao.disabled = false;
+                botao.textContent = "ENTRAR";
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>

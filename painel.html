@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Garagem dos Fundos</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .painel-admin {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,.15);
+        }
+
+        .painel-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #b5121b;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .btn-sair, .btn-acao {
+            background: #222;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .novo-produto {
+            background: #b5121b;
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-produto {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .form-produto.ativo { display: block; }
+
+        .form-produto input,
+        .form-produto textarea {
+            width: 100%;
+            padding: 13px;
+            margin: 8px 0 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        .form-produto textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-produto label { font-weight: bold; }
+
+        .aviso {
+            color: #666;
+            font-size: 13px;
+            margin-top: -10px;
+        }
+
+        .miniaturas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 20px;
+        }
+
+        .miniaturas img {
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .lista-admin { margin-top: 35px; }
+
+        .produto-admin {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 18px;
+            margin-top: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .produto-admin img {
+            width: 130px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .produto-dados {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-editar, .btn-excluir {
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-editar { background: #333; }
+        .btn-excluir { background: #b5121b; }
+
+        .mensagem {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .painel-admin {
+                margin: 20px 10px;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topo">
+    <div class="cabecalho">
+        <a href="index.html">
+            <img src="imagens/logo.jpeg" alt="Garagem dos Fundos" class="logo">
+        </a>
+
+        <div class="apresentacao">
+            <h1>GARAGEM DOS FUNDOS</h1>
+            <p>Administração da loja</p>
+        </div>
+    </div>
+</header>
+
+<main class="painel-admin">
+
+    <div class="painel-topo">
+        <div>
+            <h2>PAINEL ADMINISTRATIVO</h2>
+            <p>Gerencie os produtos da sua loja.</p>
+        </div>
+
+        <button class="btn-sair" id="botaoSair">SAIR</button>
+    </div>
+
+    <button class="novo-produto" id="botaoNovo">
+        + NOVO PRODUTO
+    </button>
+
+    <section class="form-produto" id="formProduto">
+
+        <h3 id="tituloFormulario">Cadastrar produto</h3>
+
+        <form id="cadastroProduto">
+
+            <label>Nome do produto</label>
+            <input type="text" id="nomeProduto" required>
+
+            <label>Descrição</label>
+            <textarea id="descricaoProduto" required></textarea>
+
+            <label>Valor (R$)</label>
+            <input type="number" id="precoProduto"
+                   min="0.01" step="0.01" required>
+
+            <label>Fotos do produto (até 12)</label>
+            <input type="file" id="fotosProduto"
+                   accept="image/jpeg,image/png,image/webp"
+                   multiple>
+
+            <p class="aviso" id="avisoFotos">
+                Selecione até 12 fotos. A primeira será a foto principal.
+            </p>
+
+            <div class="miniaturas" id="previaFotos"></div>
+
+            <label>Link de pagamento</label>
+            <input type="url" id="pagamentoProduto"
+                   placeholder="https://...">
+
+            <button type="submit" class="novo-produto" id="botaoSalvar">
+                SALVAR PRODUTO
+            </button>
+
+            <button type="button" class="btn-acao" id="botaoCancelar">
+                CANCELAR
+            </button>
+
+        </form>
+
+        <div class="mensagem" id="mensagemFormulario"></div>
+
+    </section>
+
+    <section class="lista-admin">
+        <h3>PRODUTOS CADASTRADOS</h3>
+        <div id="listaAdmin">Carregando produtos...</div>
+    </section>
+
+</main>
+
+<script>
+const API_URL = "http://127.0.0.1:8000";
+const token = localStorage.getItem("garagem_token");
+
+const formulario = document.getElementById("cadastroProduto");
+const areaFormulario = document.getElementById("formProduto");
+const listaAdmin = document.getElementById("listaAdmin");
+const mensagem = document.getElementById("mensagemFormulario");
+const campoFotos = document.getElementById("fotosProduto");
+const previaFotos = document.getElementById("previaFotos");
+
+let produtoEditando = null;
+
+if (!token) {
+    window.location.href = "admin.html";
+}
+
+function cabecalhoAutenticado() {
+    return {
+        "Authorization": `Bearer ${token}`
+    };
+}
+
+function abrirFormulario() {
+    produtoEditando = null;
+    formulario.reset();
+    previaFotos.innerHTML = "";
+
+    document.getElementById("tituloFormulario").textContent =
+        "Cadastrar produto";
+
+    campoFotos.required = true;
+
+    document.getElementById("avisoFotos").textContent =
+        "Selecione até 12 fotos. A primeira será a foto principal.";
+
+    document.getElementById("botaoSalvar").textContent =
+        "SALVAR PRODUTO";
+
+    mensagem.textContent = "";
+    areaFormulario.classList.add("ativo");
+}
+
+function cancelarFormulario() {
+    areaFormulario.classList.remove("ativo");
+    formulario.reset();
+    previaFotos.innerHTML = "";
+    produtoEditando = null;
+}
+
+document.getElementById("botaoNovo").addEventListener(
+    "click", abrirFormulario
+);
+
+document.getElementById("botaoCancelar").addEventListener(
+    "click", cancelarFormulario
+);
+
+document.getElementById("botaoSair").addEventListener("click", () => {
+    localStorage.removeItem("garagem_token");
+    window.location.href = "admin.html";
+});
+
+// PRÉ-VISUALIZAÇÃO DAS FOTOS
+campoFotos.addEventListener("change", function() {
+
+    previaFotos.innerHTML = "";
+
+    const arquivos = Array.from(this.files);
+
+    if (arquivos.length > 12) {
+        alert("Você pode selecionar no máximo 12 fotos.");
+        this.value = "";
+        return;
+    }
+
+    arquivos.forEach(arquivo => {
+
+        if (!arquivo.type.startsWith("image/")) return;
+
+        const imagem = document.createElement("img");
+        imagem.src = URL.createObjectURL(arquivo);
+        imagem.alt = "Prévia da foto";
+
+        previaFotos.appendChild(imagem);
+    });
+
+});
+
+// CARREGAR PRODUTOS
+async function carregarProdutos() {
+
+    try {
+        const resposta = await fetch(`${API_URL}/produtos`);
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar produtos.");
+        }
+
+        const produtos = await resposta.json();
+
+        listaAdmin.innerHTML = "";
+
+        if (produtos.length === 0) {
+            listaAdmin.textContent = "Nenhum produto cadastrado.";
+            return;
+        }
+
+        produtos.forEach(produto => {
+
+            const cartao = document.createElement("article");
+            cartao.className = "produto-admin";
+
+            const imagem = document.createElement("img");
+            imagem.src = `${API_URL}${produto.imagem_url}`;
+            imagem.alt = produto.nome;
+
+            const dados = document.createElement("div");
+            dados.className = "produto-dados";
+
+            const nome = document.createElement("h4");
+            nome.textContent = produto.nome;
+
+            const descricao = document.createElement("p");
+            descricao.textContent = produto.descricao;
+
+            const preco = document.createElement("p");
+            preco.textContent = Number(produto.preco).toLocaleString(
+                "pt-BR",
+                { style: "currency", currency: "BRL" }
+            );
+
+            const quantidadeFotos = document.createElement("p");
+            quantidadeFotos.textContent =
+                `${produto.fotos?.length || 0} foto(s) cadastrada(s)`;
+
+            dados.append(nome, descricao, preco, quantidadeFotos);
+
+            const acoes = document.createElement("div");
+            acoes.className = "acoes";
+
+            const editar = document.createElement("button");
+            editar.className = "btn-editar";
+            editar.textContent = "EDITAR";
+            editar.addEventListener("click", () => editarProduto(produto));
+
+            const excluir = document.createElement("button");
+            excluir.className = "btn-excluir";
+            excluir.textContent = "EXCLUIR";
+            excluir.addEventListener("click", () => excluirProduto(produto.id));
+
+            acoes.append(editar, excluir);
+            cartao.append(imagem, dados, acoes);
+            listaAdmin.appendChild(cartao);
+        });
+
+    } catch (erro) {
+        listaAdmin.textContent = erro.message;
+    }
+}
+
+// CADASTRAR OU EDITAR
+formulario.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    const nome = document.getElementById("nomeProduto").value.trim();
+    const descricao = document.getElementById("descricaoProduto").value.trim();
+    const preco = document.getElementById("precoProduto").value;
+    const pagamento = document.getElementById("pagamentoProduto").value.trim();
+    const arquivos = Array.from(campoFotos.files);
+
+    const botao = document.getElementById("botaoSalvar");
+
+    if (produtoEditando === null && arquivos.length === 0) {
+        mensagem.textContent = "Selecione pelo menos uma foto.";
+        return;
+    }
+
+    if (arquivos.length > 12) {
+        mensagem.textContent = "Selecione no máximo 12 fotos.";
+        return;
+    }
+
+    botao.disabled = true;
+    mensagem.textContent = "Salvando...";
+
+    try {
+
+        let resposta;
+
+        if (produtoEditando !== null) {
+
+            const dados = {
+                nome,
+                descricao,
+                preco: Number(preco),
+                pagamento_url: pagamento || null
+            };
+
+            resposta = await fetch(
+                `${API_URL}/admin/produtos/${produtoEditando}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        ...cabecalhoAutenticado(),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                }
+            );
+
+        } else {
+
+            const dados = new FormData();
+
+            dados.append("nome", nome);
+            dados.append("descricao", descricao);
+            dados.append("preco", preco);
+            dados.append("pagamento_url", pagamento);
+
+            arquivos.forEach(arquivo => {
+                dados.append("fotos", arquivo);
+            });
+
+            resposta = await fetch(`${API_URL}/admin/produtos`, {
+                method: "POST",
+                headers: cabecalhoAutenticado(),
+                body: dados
+            });
+        }
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(resultado.detail || "Não foi possível salvar.");
+        }
+
+        mensagem.textContent = "Produto salvo com sucesso!";
+
+        cancelarFormulario();
+        await carregarProdutos();
+
+    } catch (erro) {
+        mensagem.textContent = erro.message;
+
+    } finally {
+        botao.disabled = false;
+    }
+
+});
+
+// EDITAR PRODUTO
+function editarProduto(produto) {
+
+    produtoEditando = produto.id;
+
+    document.getElementById("tituloFormulario").textContent =
+        "Editar produto";
+
+    document.getElementById("nomeProduto").value = produto.nome;
+    document.getElementById("descricaoProduto").value = produto.descricao;
+    document.getElementById("precoProduto").value = produto.preco;
+
+    document.getElementById("pagamentoProduto").value =
+        produto.pagamento_url || "";
+
+    campoFotos.required = false;
+    campoFotos.value = "";
+    previaFotos.innerHTML = "";
+
+    document.getElementById("avisoFotos").textContent =
+        "A edição mantém as fotos atuais. A troca da galeria será habilitada depois.";
+
+    document.getElementById("botaoSalvar").textContent =
+        "SALVAR ALTERAÇÕES";
+
+    mensagem.textContent = "";
+    areaFormulario.classList.add("ativo");
+    areaFormulario.scrollIntoView({ behavior: "smooth" });
+}
+
+// EXCLUIR PRODUTO
+async function excluirProduto(id) {
+
+    if (!confirm("Tem certeza que deseja excluir este produto?")) {
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch(
+            `${API_URL}/admin/produtos/${id}`,
+            {
+                method: "DELETE",
+                headers: cabecalhoAutenticado()
+            }
+        );
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(resultado.detail || "Erro ao excluir produto.");
+        }
+
+        alert("Produto excluído com sucesso!");
+        await carregarProdutos();
+
+    } catch (erro) {
+        alert(erro.message);
+    }
+}
+
+carregarProdutos();
+</script>
+
+</body>
+</html>

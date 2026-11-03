@@ -1,0 +1,21 @@
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Banco local
+backend/garagem.db
+*.sqlite3
+
+# Fotos temporárias do servidor
+backend/uploads/*
+
+# Sistema
+.DS_Store
+.vscode/

@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fale Conosco | Garagem dos Fundos</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="topo">
+
+        <div class="cabecalho">
+
+            <a href="index.html">
+                <img src="imagens/logo.jpeg"
+                     alt="Garagem dos Fundos"
+                     class="logo">
+            </a>
+
+            <div class="apresentacao">
+                <h1>GARAGEM DOS FUNDOS</h1>
+                <p>Peças, acessórios e oportunidades para quem gosta de carro.</p>
+            </div>
+
+        </div>
+
+        <nav class="menu">
+            <a href="index.html">INÍCIO</a>
+            <a href="servicos.html">NOSSOS SERVIÇOS</a>
+            <a href="contato.html">FALE CONOSCO</a>
+        </nav>
+
+    </header>
+
+
+    <main class="pagina-interna">
+
+        <section class="contato-container">
+
+            <div class="contato-titulo">
+                <h2>FALE CONOSCO</h2>
+
+                <p>
+                    Tem alguma dúvida, procura uma peça específica
+                    ou deseja saber mais sobre nossos produtos?
+                    Envie uma mensagem!
+                </p>
+            </div>
+
+
+            <form class="formulario-contato"
+                  action="https://formsubmit.co/SEU_EMAIL_AQUI"
+                  method="POST">
+
+                <input type="hidden" name="_subject"
+                       value="Novo contato - Garagem dos Fundos">
+
+                <input type="hidden" name="_captcha"
+                       value="false">
+
+                <input type="hidden" name="_template"
+                       value="table">
+
+                <input type="hidden" name="_next"
+                       value="https://SEU-SITE.com/obrigado.html">
+
+                <label for="nome">Nome completo</label>
+
+                <input type="text"
+                       id="nome"
+                       name="nome"
+                       placeholder="Digite seu nome"
+                       required>
+
+
+                <label for="email">E-mail</label>
+
+                <input type="email"
+                       id="email"
+                       name="email"
+                       placeholder="Digite seu e-mail"
+                       required>
+
+
+                <label for="telefone">Telefone / WhatsApp</label>
+
+                <input type="tel"
+                       id="telefone"
+                       name="telefone"
+                       placeholder="(00) 00000-0000">
+
+
+                <label for="assunto">Assunto</label>
+
+                <select id="assunto" name="assunto" required>
+
+                    <option value="">Selecione um assunto</option>
+
+                    <option>Informações sobre produtos</option>
+                    <option>Disponibilidade de peças</option>
+                    <option>Orçamento</option>
+                    <option>Parcerias</option>
+                    <option>Outros assuntos</option>
+
+                </select>
+
+
+                <label for="mensagem">Sua mensagem</label>
+
+                <textarea id="mensagem"
+                          name="mensagem"
+                          rows="5"
+                          placeholder="Escreva sua mensagem..."
+                          required></textarea>
+
+
+                <button type="submit" class="botao-enviar">
+                    ENVIAR MENSAGEM
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <footer class="rodape">
+
+        <h3>GARAGEM DOS FUNDOS</h3>
+
+        <p>Viva o mundo automotivo.</p>
+
+        <p>© 2026 - Todos os direitos reservados.</p>
+        <p> Criado por CPG Technology Consulting</p>
+
+    </footer>
+
+</body>
+
+</html>
