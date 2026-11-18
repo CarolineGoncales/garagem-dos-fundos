@@ -1,10 +1,11 @@
 
 /* =====================================
    GARAGEM DOS FUNDOS
-   CATÁLOGO DINÂMICO + GALERIA
+   CATÁLOGO ESTÁTICO + GALERIA
 ===================================== */
 
-const API_URL = "http://127.0.0.1:8000";
+const WHATSAPP = "5513996692839";
+const LIMITE_FOTOS = 6;
 
 let fotosGaleria = [];
 let indiceFotoAtual = 0;
@@ -35,6 +36,7 @@ function adicionarEstilosGaleria() {
             font-size: 13px;
             color: #b5121b;
             font-weight: bold;
+            cursor: pointer;
         }
 
         #galeria-modal {
@@ -123,7 +125,7 @@ function adicionarEstilosGaleria() {
 }
 
 /* =====================================
-   CRIAR MODAL
+   CRIAR GALERIA
 ===================================== */
 
 function criarGaleria() {
@@ -148,11 +150,11 @@ function criarGaleria() {
     modal.querySelector(".galeria-anterior").onclick = fotoAnterior;
     modal.querySelector(".galeria-proxima").onclick = proximaFoto;
 
-    modal.addEventListener("click", (evento) => {
+    modal.addEventListener("click", evento => {
         if (evento.target === modal) fecharGaleria();
     });
 
-    document.addEventListener("keydown", (evento) => {
+    document.addEventListener("keydown", evento => {
         if (!modal.classList.contains("ativo")) return;
 
         if (evento.key === "Escape") fecharGaleria();
@@ -162,7 +164,7 @@ function criarGaleria() {
 }
 
 /* =====================================
-   ABRIR E NAVEGAR NA GALERIA
+   CONTROLE DA GALERIA
 ===================================== */
 
 function abrirGaleria(fotos, indice = 0) {
@@ -183,16 +185,17 @@ function fecharGaleria() {
 function atualizarFotoGaleria() {
     const imagem = document.getElementById("galeria-imagem");
     const contador = document.getElementById("galeria-contador");
-    const anterior = document.querySelector(".galeria-anterior");
-    const proxima = document.querySelector(".galeria-proxima");
 
-    imagem.src = `${API_URL}${fotosGaleria[indiceFotoAtual]}`;
+    imagem.src = fotosGaleria[indiceFotoAtual];
 
     contador.textContent =
         `${indiceFotoAtual + 1} de ${fotosGaleria.length} fotos`;
 
-    anterior.style.display = fotosGaleria.length > 1 ? "block" : "none";
-    proxima.style.display = fotosGaleria.length > 1 ? "block" : "none";
+    document.querySelector(".galeria-anterior").style.display =
+        fotosGaleria.length > 1 ? "block" : "none";
+
+    document.querySelector(".galeria-proxima").style.display =
+        fotosGaleria.length > 1 ? "block" : "none";
 }
 
 function proximaFoto() {
@@ -208,11 +211,136 @@ function fotoAnterior() {
 }
 
 /* =====================================
-   CARREGAR PRODUTOS DA API
+   NORMALIZAR FOTOS
+===================================== */
+
+function obterFotos(produto) {
+    let fotos = [];
+
+    if (Array.isArray(produto.fotos)) {
+        fotos = produto.fotos.map(foto => {
+            return typeof foto === "string"
+                ? foto
+                : foto.imagem_url;
+        });
+    } else if (produto.imagem_url) {
+        fotos = [produto.imagem_url];
+    }
+
+    return fotos
+        .filter(foto => typeof foto === "string" && foto.trim() !== "")
+        .slice(0, LIMITE_FOTOS);
+}
+
+/* =====================================
+   BOTÃO COMPRAR AGORA
+===================================== */
+
+function criarBotaoCompra(produto) {
+    const botao = document.createElement("a");
+
+    botao.className = "botao-comprar";
+    botao.textContent = "COMPRAR AGORA";
+    botao.target = "_blank";
+    botao.rel = "noopener noreferrer";
+
+    if (produto.pagamento_url) {
+        botao.href = produto.pagamento_url;
+    } else {
+        const mensagem = encodeURIComponent(
+            `Olá! Tenho interesse no produto: ${produto.nome}. Gostaria de mais informações.`
+        );
+
+        botao.href = `https://wa.me/${WHATSAPP}?text=${mensagem}`;
+    }
+
+    return botao;
+}
+
+/* =====================================
+   MONTAR PRODUTO
+===================================== */
+
+function montarProduto(produto) {
+    const cartao = document.createElement("article");
+    cartao.className = "produto";
+
+    const fotos = obterFotos(produto);
+
+    const imagemContainer = document.createElement("div");
+    imagemContainer.className = "produto-imagem-container";
+
+    if (fotos.length > 0) {
+        const imagem = document.createElement("img");
+
+        imagem.src = fotos[0];
+        imagem.alt = produto.nome || "Produto automotivo";
+        imagem.loading = "lazy";
+
+        imagem.onerror = function () {
+            this.style.display = "none";
+        };
+
+        imagemContainer.appendChild(imagem);
+
+        imagemContainer.addEventListener("click", () => {
+            abrirGaleria(fotos);
+        });
+    }
+
+    const informacoes = document.createElement("div");
+    informacoes.className = "produto-info";
+
+    const nome = document.createElement("h3");
+    nome.textContent = produto.nome || "Produto sem nome";
+
+    const descricao = document.createElement("p");
+    descricao.textContent = produto.descricao || "";
+
+    const preco = document.createElement("div");
+    preco.className = "preco";
+
+    preco.textContent = Number(produto.preco || 0).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+
+    informacoes.appendChild(nome);
+    informacoes.appendChild(descricao);
+    informacoes.appendChild(preco);
+
+    if (fotos.length > 1) {
+        const verFotos = document.createElement("span");
+
+        verFotos.className = "produto-ver-fotos";
+        verFotos.textContent =
+            `📷 Clique para ver as ${fotos.length} fotos`;
+
+        verFotos.addEventListener("click", () => {
+            abrirGaleria(fotos);
+        });
+
+        informacoes.appendChild(verFotos);
+    }
+
+    informacoes.appendChild(criarBotaoCompra(produto));
+
+    cartao.appendChild(imagemContainer);
+    cartao.appendChild(informacoes);
+
+    return cartao;
+}
+
+/* =====================================
+   CARREGAR PRODUTOS DO JSON
 ===================================== */
 
 async function carregarProdutos() {
     const lista = document.getElementById("lista-produtos");
+
     if (!lista) return;
 
     adicionarEstilosGaleria();
@@ -221,112 +349,24 @@ async function carregarProdutos() {
     lista.innerHTML = "<p>Carregando produtos...</p>";
 
     try {
-        const resposta = await fetch(`${API_URL}/produtos`);
+        const resposta = await fetch("./produtos.json");
 
         if (!resposta.ok) {
-            throw new Error("Não foi possível carregar os produtos.");
+            throw new Error("Erro ao acessar produtos.json");
         }
 
         const produtos = await resposta.json();
 
         lista.innerHTML = "";
 
-        if (produtos.length === 0) {
-            lista.innerHTML = "<p>Nenhum produto disponível no momento.</p>";
+        if (!Array.isArray(produtos) || produtos.length === 0) {
+            lista.innerHTML =
+                "<p>Nenhum produto disponível no momento.</p>";
             return;
         }
 
-        produtos.forEach((produto) => {
-            const cartao = document.createElement("article");
-            cartao.className = "produto";
-
-            // FOTOS DO PRODUTO
-            let fotos = [];
-
-            if (produto.fotos && produto.fotos.length > 0) {
-                fotos = produto.fotos.map(foto => foto.imagem_url);
-            } else if (produto.imagem_url) {
-                fotos = [produto.imagem_url];
-            }
-
-            // IMAGEM PRINCIPAL
-            const imagemContainer = document.createElement("div");
-            imagemContainer.className = "produto-imagem-container";
-
-            const imagem = document.createElement("img");
-            imagem.src = `${API_URL}${fotos[0]}`;
-            imagem.alt = produto.nome;
-            imagem.loading = "lazy";
-
-            imagem.onerror = function () {
-                this.style.display = "none";
-            };
-
-            imagemContainer.appendChild(imagem);
-
-            // ABRIR GALERIA AO CLICAR
-            imagemContainer.addEventListener("click", () => {
-                if (fotos.length > 0) {
-                    abrirGaleria(fotos);
-                }
-            });
-
-            // INFORMAÇÕES
-            const informacoes = document.createElement("div");
-            informacoes.className = "produto-info";
-
-            const nome = document.createElement("h3");
-            nome.textContent = produto.nome;
-
-            const descricao = document.createElement("p");
-            descricao.textContent = produto.descricao;
-
-            // PREÇO
-            const preco = document.createElement("div");
-            preco.className = "preco";
-
-            preco.textContent = Number(produto.preco).toLocaleString(
-                "pt-BR",
-                {
-                    style: "currency",
-                    currency: "BRL"
-                }
-            );
-
-            informacoes.appendChild(nome);
-            informacoes.appendChild(descricao);
-            informacoes.appendChild(preco);
-
-            // INDICADOR DE FOTOS
-            if (fotos.length > 1) {
-                const verFotos = document.createElement("span");
-                verFotos.className = "produto-ver-fotos";
-                verFotos.textContent = `📷 Clique na imagem para ver ${fotos.length} fotos`;
-
-                verFotos.addEventListener("click", () => {
-                    abrirGaleria(fotos);
-                });
-
-                informacoes.appendChild(verFotos);
-            }
-
-            // BOTÃO DE COMPRA
-            if (produto.pagamento_url) {
-                const comprar = document.createElement("a");
-
-                comprar.className = "botao-comprar";
-                comprar.textContent = "COMPRAR";
-                comprar.href = produto.pagamento_url;
-                comprar.target = "_blank";
-                comprar.rel = "noopener noreferrer";
-
-                informacoes.appendChild(comprar);
-            }
-
-            cartao.appendChild(imagemContainer);
-            cartao.appendChild(informacoes);
-
-            lista.appendChild(cartao);
+        produtos.forEach(produto => {
+            lista.appendChild(montarProduto(produto));
         });
 
     } catch (erro) {
@@ -343,6 +383,4 @@ async function carregarProdutos() {
    INICIALIZAÇÃO
 ===================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-    carregarProdutos();
-});
+document.addEventListener("DOMContentLoaded", carregarProdutos);

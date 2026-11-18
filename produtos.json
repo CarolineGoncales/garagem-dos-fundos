@@ -1,1 +1,17 @@
-[]
+
+[
+    {
+        "nome": "Porsche Macan 2.0 Turbo 2016",
+        "descricao": "SUV confortável, potente e com presença. Vai da rotina às viagens sem reclamar.\n\nAno: 2016\nMotor: 2.0 Turbo\nQuilometragem: 113.000 km\n\n• Blindagem BSS, leve e sem delaminações.\n• Rodas originais aro 18 diamantadas.\n• Quatro pneus Yokohama seminovos.\n• Apple CarPlay original.\n• Óleos e filtros trocados, inclusive o do câmbio, com notas fiscais.\n• Documentação em dia, sem débitos ou restrições.\n• Manual e chave reserva.\n• Seguro Porto Seguro.\n\nAberto a propostas justas. Avalio troca com volta, conforme negociação. Para trocas, considerar valor de tabela FIPE.",
+        "preco": 190000,
+        "fotos": [
+            "fotos/Porche5.jpeg",
+            "fotos/Porche2.jpeg",
+            "fotos/Porche.jpeg",
+            "fotos/Porche3.jpeg",
+            "fotos/Porche4.jpeg",
+            "fotos/Porche1.jpeg"
+        ],
+        "pagamento_url": ""
+    }
+]
